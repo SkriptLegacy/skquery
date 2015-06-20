@@ -21,7 +21,7 @@ public class ExprParticle extends SimpleExpression<Particle> {
         ParticleType p = particle.getSingle(event);
         if (p == null) return null;
         Particle product = new Particle(p);
-        if (data != null && data.getSingle(event) != null) product.setData(data.getSingle(event).floatValue());
+        if (data != null && data.getSingle(event) != null) product.setData(data.getSingle(event).intValue());
         if (x != null && x.getSingle(event) != null) product.setXOffset(x.getSingle(event).floatValue());
         if (y != null && y.getSingle(event) != null) product.setYOffset(y.getSingle(event).floatValue());
         if (z != null && z.getSingle(event) != null) product.setZOffset(z.getSingle(event).floatValue());

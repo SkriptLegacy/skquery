@@ -114,7 +114,7 @@ public class PlayerDisplayChanger {
 
     private void updateSkin(WrappedGameProfile profile, String skinOwner) {
         try {
-            JSONObject json = (JSONObject) new JSONParser().parse(profileCache.get(skinOwner));
+            JSONObject json = (JSONObject) new JSONParser().parse(profileCache.getIfPresent(skinOwner));
             JSONArray properties = (JSONArray) json.get("properties");
 
             for (Object property1 : properties) {
