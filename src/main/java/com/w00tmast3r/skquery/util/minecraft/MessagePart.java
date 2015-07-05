@@ -1,7 +1,8 @@
 package com.w00tmast3r.skquery.util.minecraft;
 
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonWriter;
+
+import com.google.gson.stream.JsonWriter;
 
 final class MessagePart {
 

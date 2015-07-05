@@ -1,6 +1,11 @@
 package com.w00tmast3r.skquery.util.minecraft;
 
+import java.util.ArrayList;
+
 import com.w00tmast3r.skquery.util.Reflection;
+
+import me.virustotal.utils.ServerUtils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -10,7 +15,14 @@ import org.bukkit.inventory.meta.FireworkMeta;
 
 public class FireworkFactory {
 
-    private Player[] players = Bukkit.getOnlinePlayers();
+    private static ArrayList<Player> players = new ArrayList<Player>();
+    static
+    {
+    	for(Player player : ServerUtils.getOnlinePlayers())
+    	{
+    		players.add(player);
+    	}
+    }
     private FireworkEffect[] effects = null;
     private Location loc = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
 
@@ -18,7 +30,11 @@ public class FireworkFactory {
     }
 
     public FireworkFactory players(Player... players) {
-        this.players = players;
+        FireworkFactory.players.clear();
+        for(Player p : players)
+        {
+        	FireworkFactory.players.add(p);
+        }
         return this;
     }
 
@@ -34,7 +50,13 @@ public class FireworkFactory {
 
     public void play() {
         Object packet = constructPacket(loc, effects);
-        Reflection.sendPacket(packet, players);
+        ArrayList<Player> myPlayers = FireworkFactory.players;
+        Player[] ar = new Player[myPlayers.size()];
+        for(int i = 0; i < myPlayers.size(); i++)
+        {
+        	ar[i] = myPlayers.get(i);
+        }
+        Reflection.sendPacket(packet, ar);
     }
 
     private static Object constructPacket(Location loc, FireworkEffect... effects) {

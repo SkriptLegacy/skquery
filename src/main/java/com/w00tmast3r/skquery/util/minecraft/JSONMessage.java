@@ -1,9 +1,11 @@
 package com.w00tmast3r.skquery.util.minecraft;
 
+import com.google.gson.stream.JsonWriter;
 import com.w00tmast3r.skquery.util.Reflection;
+
 import org.bukkit.Achievement;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonWriter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,7 +19,7 @@ public class JSONMessage {
     private String jsonString;
     private boolean dirty;
 
-    private Class<?> nmsChatSerializer = Reflection.nmsClass("ChatSerializer");
+    //private Class<?> nmsChatSerializer = Reflection.nmsClass("ChatSerializer");
     private Class<?> nmsTagCompound = Reflection.nmsClass("NBTTagCompound");
     private Class<?> nmsPacketPlayOutChat = Reflection.nmsClass("PacketPlayOutChat");
     private Class<?> nmsAchievement = Reflection.nmsClass("Achievement");
@@ -138,7 +140,7 @@ public class JSONMessage {
         StringWriter string = new StringWriter();
         JsonWriter json = new JsonWriter(string);
         try {
-            if (messageParts.size() == 1) {
+            if (messageParts.size() == 1) {            
                 latest().writeJson(json);
             } else {
                 json.beginObject().name("text").value("").name("extra").beginArray();
@@ -157,17 +159,14 @@ public class JSONMessage {
     }
 
     public void send(Player... players) {
-        try {
-            Object serialized = Reflection.getMethod(nmsChatSerializer, "a", String.class).invoke(null, toJSONString());
-            Object packet = nmsPacketPlayOutChat.getConstructor(Reflection.nmsClass("IChatBaseComponent")).newInstance(serialized);
-            Reflection.sendPacket(packet, players);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    	for(Player p : players)
+    	{
+    		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "tellraw " + p.getName() + " " + this.toJSONString());
+    	}
     }
 
     public String toOldMessageFormat() {
-        StringBuilder result = new StringBuilder();
+    	StringBuilder result = new StringBuilder();
         for (MessagePart part : messageParts) {
             result.append(part.color).append(part.text);
         }
