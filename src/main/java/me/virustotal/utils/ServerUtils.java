@@ -17,7 +17,8 @@ public class ServerUtils {
 	 *
 	 */
 	
-	private static Method methodGetOnlinePlayers;
+	/*private static Method methodGetOnlinePlayers;
+	//gone until I figure out why it wasn't working
 	
 	static
 	{
@@ -98,5 +99,6 @@ public class ServerUtils {
 		{
 			throw new RuntimeException("Failed retrieving online players.");
 		}
-	}
+	}*/
+	
 }

@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 public class ParticleLibrary {
  
-    private static Constructor<?> constructor;
+   /* private static Constructor<?> constructor;
     private static Field  playerConnection;
     private static Method  getHandle;
     private static Method  sendPacket;
@@ -132,5 +132,5 @@ public class ParticleLibrary {
         public String  getName() {
             return name;
         }
-    }
+    }*/
 }

@@ -13,8 +13,6 @@ import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.util.CancellableBukkitTask;
 import com.w00tmast3r.skquery.util.packet.particle.Particle;
 
-import me.virustotal.utils.ServerUtils;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -34,7 +32,7 @@ public class EffTrail extends Effect {
         CancellableBukkitTask task = new CancellableBukkitTask() {
             @Override
             public void run() {
-                p.play(e.getEntity().getLocation(), ServerUtils.getOnlinePlayers().toArray(new Player[ServerUtils.getOnlinePlayers().size()]));
+                p.play(e.getEntity().getLocation(),Bukkit.getOnlinePlayers().toArray(new Player[Bukkit.getOnlinePlayers().size()]));
                 if(!e.getEntity().isValid() || e.getEntity().isOnGround()) {
                     cancel();
                 }

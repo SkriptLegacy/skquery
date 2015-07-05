@@ -4,10 +4,12 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.util.Collect;
 import com.w00tmast3r.skquery.util.packet.particle.Particle;
 import com.w00tmast3r.skquery.util.packet.particle.ParticleType;
+
 import org.bukkit.event.Event;
 
 @Patterns("particle %particletype%[:%-number%] [offset (at|by) %-number%, %-number%, %-number%]")
@@ -20,7 +22,7 @@ public class ExprParticle extends SimpleExpression<Particle> {
     protected Particle[] get(Event event) {
         ParticleType p = particle.getSingle(event);
         if (p == null) return null;
-        Particle product = new Particle(p.getId());
+        Particle product = new Particle(p);
         if (data != null && data.getSingle(event) != null) product.setData(data.getSingle(event).intValue());
         if (x != null && x.getSingle(event) != null) product.setXOffset(x.getSingle(event).floatValue());
         if (y != null && y.getSingle(event) != null) product.setYOffset(y.getSingle(event).floatValue());

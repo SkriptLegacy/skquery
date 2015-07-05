@@ -3,7 +3,6 @@ package com.w00tmast3r.skquery.util.packet.particle;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import com.w00tmast3r.skquery.util.packet.particle.ParticleLibrary.ParticleType;
 
 public class Particle {
 
@@ -23,7 +22,7 @@ public class Particle {
     }
 
     public Particle(ParticleType particle) {
-        this.particle = particle.getName();
+        this.particle = particle.getId();
     }
 
     public Particle(ParticleTypes particle) {
@@ -52,15 +51,15 @@ public class Particle {
 
     public void play(Location loc, Player... players) {
 
-    	ParticleLibrary library = new ParticleLibrary();
+    	//ParticleLibrary library = new ParticleLibrary();
     	String formattedParticle = this.particle.toUpperCase();
     	if(formattedParticle.contains(" "))
     		formattedParticle.replace(" ", "_");
     	
     	for(Player p : players)
     	{
-    		library.sendPartileToPlayer(p, ParticleType.valueOf(formattedParticle), loc, this.xO, this.yO,this.zO, 0.0F, this.amount);
-    		//p.spigot().playEffect(loc, Effect.getByName(this.particle), this.data, 0, this.xO, this.yO,this.zO, 0.0F, this.amount, 2);
+    		//library.sendPartileToPlayer(p, ParticleType.valueOf(formattedParticle), loc, this.xO, this.yO,this.zO, 0.0F, this.amount);
+    		p.spigot().playEffect(loc, Effect.getByName(this.particle), this.data, 0, this.xO, this.yO,this.zO, 0.0F, this.amount, 2);
     	}
     }
 }

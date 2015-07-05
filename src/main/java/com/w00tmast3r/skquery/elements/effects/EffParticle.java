@@ -11,8 +11,7 @@ import com.w00tmast3r.skquery.api.Name;
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.util.packet.particle.Particle;
 
-import me.virustotal.utils.ServerUtils;
-
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -33,7 +32,7 @@ public class EffParticle extends Effect {
         Particle e = effect.getSingle(event);
         Number a = amt.getSingle(event);
         Player[] list;
-        if (player == null) list = ServerUtils.getOnlinePlayers().toArray(new Player[ServerUtils.getOnlinePlayers().size()]);
+        if (player == null) list = Bukkit.getOnlinePlayers().toArray(new Player[Bukkit.getOnlinePlayers().size()]);
         else list = player.getAll(event);
         if(e == null || a == null) return;
         e.setAmount(a.intValue());
