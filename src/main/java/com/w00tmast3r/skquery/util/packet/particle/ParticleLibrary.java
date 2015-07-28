@@ -7,9 +7,10 @@ import java.lang.reflect.Method;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
 public class ParticleLibrary {
  
-   /* private static Constructor<?> constructor;
+   private static Constructor<?> constructor;
     private static Field  playerConnection;
     private static Method  getHandle;
     private static Method  sendPacket;
@@ -26,10 +27,21 @@ public class ParticleLibrary {
         }
     }
  
-    public void sendParticleToLocation(Location loc, ParticleType particle, float xOffset, float yOffset, float zOffset, float speed, int amount) {
+    public void sendParticleToLocation(Location loc, ParticleType particle, float xOffset, float yOffset, float zOffset, float speed, int amount, int data) {
         try {
-            Object  packet = constructor.newInstance(particle.getName(), (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), xOffset, yOffset, zOffset, speed, amount);
-            for (Player p : Bukkit.getOnlinePlayers()) {
+            Object  packet = null;
+            	if(Bukkit.getVersion().toLowerCase().contains("1_7"))
+            		packet = constructor.newInstance(particle.getName(), (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), xOffset, yOffset, zOffset, speed, amount);
+            	else if(Bukkit.getVersion().toLowerCase().contains("1_8"))
+            	{
+            		Class enumParticle = Class.forName("EnumParticle");
+            		Constructor constructor = enumParticle.getConstructor(String.class, int.class, boolean.class);
+            		Object obj = constructor.newInstance(particle.getName(), data, true, amount);
+            		packet = constructor.newInstance(obj, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), xOffset, yOffset, zOffset, speed, amount);
+            	}
+            		
+            	
+            	for (Player p : Bukkit.getOnlinePlayers()) {
                 if (loc.getWorld().equals(p.getWorld()) && p.getLocation().distance(loc) <= 50) {
                     Object  entityPlayer = getHandle.invoke(p);
                     Object  connection = playerConnection.get(entityPlayer);
@@ -41,9 +53,18 @@ public class ParticleLibrary {
         }
     }
  
-    public void sendPartileToPlayer(Player p, ParticleType particle, Location loc, float xOffset, float yOffset, float zOffset, float speed, int amount) {
+    public void sendPartileToPlayer(Player p, ParticleType particle, Location loc, float xOffset, float yOffset, float zOffset, float speed, int amount, int data) {
         try {
-            Object  packet = constructor.newInstance(particle.getName(), (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), xOffset, yOffset, zOffset, speed, amount);
+            Object  packet = null;
+            if(Bukkit.getVersion().toLowerCase().contains("1_7"))
+        		packet = constructor.newInstance(particle.getName(), (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), xOffset, yOffset, zOffset, speed, amount);
+        	else if(Bukkit.getVersion().toLowerCase().contains("1_8"))
+        	{
+        		Class enumParticle = Class.forName("EnumParticle");
+        		Constructor constructor = enumParticle.getConstructor(String.class, int.class, boolean.class);
+        		Object obj = constructor.newInstance(particle.getName(), data, true, amount);
+        		packet = constructor.newInstance(obj, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), xOffset, yOffset, zOffset, speed, amount);
+        	}
             Object  entityPlayer = getHandle.invoke(p);
             Object  connection = playerConnection.get(entityPlayer);
             sendPacket.invoke(connection, packet);
@@ -129,8 +150,9 @@ public class ParticleLibrary {
         {
             this.name = name; 
         }
-        public String  getName() {
+        public String  getName() 
+        {
             return name;
         }
-    }*/
+    }
 }

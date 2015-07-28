@@ -8,7 +8,7 @@ import ch.njol.util.Kleenean;
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.util.Collect;
 import com.w00tmast3r.skquery.util.packet.particle.Particle;
-import com.w00tmast3r.skquery.util.packet.particle.ParticleType;
+import com.w00tmast3r.skquery.util.packet.particle.ParticleLibrary.ParticleType;
 
 import org.bukkit.event.Event;
 
