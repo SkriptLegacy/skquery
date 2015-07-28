@@ -17,6 +17,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.collect.Maps;
 import com.google.common.io.CharStreams;
 import com.google.common.io.InputSupplier;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -26,6 +27,7 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
@@ -114,7 +116,27 @@ public class PlayerDisplayChanger {
 
     private void updateSkin(WrappedGameProfile profile, String skinOwner) {
         try {
-            JSONObject json = (JSONObject) new JSONParser().parse(profileCache.getIfPresent(skinOwner));
+            JSONObject json = null;
+            		
+            
+            for(Method method : profileCache.getClass().getMethods())
+            {
+            	if(method.getName().equals("get"))
+            	{
+            		json = (JSONObject) new JSONParser().getClass().getMethod("get").invoke(method.invoke(skinOwner));
+            		break;
+            	}
+            	else if(method.getName().equals("getIfPresent"))
+            	{
+            		json = (JSONObject) new JSONParser().getClass().getMethod("getIfPresent").invoke(method.invoke(skinOwner));
+            		break;
+            	}
+            }
+            		//
+            		//	json = (JSONObject) new JSONParser().parse(profileCache.get(skinOwner));
+            		//else
+            		//	json = (JSONObject) new JSONParser().parse(profileCache.getIfPresent(skinOwner));
+            		
             JSONArray properties = (JSONArray) json.get("properties");
 
             for (Object property1 : properties) {

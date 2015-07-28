@@ -2,6 +2,8 @@ package com.w00tmast3r.skquery.util.minecraft;
 
 import com.w00tmast3r.skquery.util.Reflection;
 
+import me.virustotal.utils.ServerUtils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -11,7 +13,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 
 public class FireworkFactory {
 
-    private Player[] players = Bukkit.getOnlinePlayers().toArray(new Player[Bukkit.getOnlinePlayers().size()]);
+    private Player[] players = ServerUtils.getOnlinePlayers();
     
     private FireworkEffect[] effects = null;
     private Location loc = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
