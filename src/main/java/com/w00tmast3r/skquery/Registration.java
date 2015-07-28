@@ -35,36 +35,40 @@ public class Registration {
         final URL callerLocation = caller.getProtectionDomain().getCodeSource().getLocation();
         Bukkit.getLogger().info("[skQuery] Snooping enabled from " + caller.getCanonicalName());
         try {
-            File src;
-            try {
-                src = new File(callerLocation.toURI());
-            } catch (URISyntaxException e) {
-                src = new File(callerLocation.getPath());
-            }
-            PluginDescriptionFile desc = SkQuery.getInstance().getPluginLoader().getPluginDescription(src);
-            Bukkit.getLogger().info("[skQuery] Locating classes from " + desc.getName() + "...");
-            try {
-                ArrayList<Class> classes = new ArrayList<>();
-                JarFile jar = new JarFile(src);
-                for (JarEntry e : new IterableEnumeration<>(jar.entries())) {
-                    if (e.getName().endsWith(".class")) {
-                        String className = e.getName().replace('/', '.').substring(0, e.getName().length() - 6);
-                        try {
-                            Class c = Class.forName(className, false, caller.getClassLoader());
-                            if (c == Pragma.class || c == OptionsPragma.class || c == AbstractTask.class) continue;
-                            if (Effect.class.isAssignableFrom(c)
-                                    || Condition.class.isAssignableFrom(c)
-                                    || Expression.class.isAssignableFrom(c)
-                                    || AbstractTask.class.isAssignableFrom(c)) {
-                                classes.add(c);
-                            }
-                        } catch (ClassNotFoundException error) {
-                            error.printStackTrace();
-                        } catch (NoClassDefFoundError | ExceptionInInitializerError ignored) {
-                        }
-                    }
-                }
-                Bukkit.getLogger().info("[skQuery] Finished snooping of " + desc.getName() + " with " + classes.size() + " classes.");
+        	File src;
+        	try {
+        		src = new File(callerLocation.toURI());
+        	} catch (URISyntaxException e) {
+        		src = new File(callerLocation.getPath());
+        	}
+        	PluginDescriptionFile desc = SkQuery.getInstance().getPluginLoader().getPluginDescription(src);
+        	Bukkit.getLogger().info("[skQuery] Locating classes from " + desc.getName() + "...");
+        	try {
+        		ArrayList<Class> classes = new ArrayList<>();
+        		JarFile jar = new JarFile(src);
+        		for (JarEntry e : new IterableEnumeration<>(jar.entries())) {
+        			if (e.getName().endsWith(".class")) {
+        				String className = e.getName().replace('/', '.').substring(0, e.getName().length() - 6);
+        				if(className.startsWith("com.w00tmast3r"))
+        				{
+        					try {
+        						Class c = Class.forName(className, false, caller.getClassLoader());
+        						if (c == Pragma.class || c == OptionsPragma.class || c == AbstractTask.class) continue;
+        						if (Effect.class.isAssignableFrom(c)
+        								|| Condition.class.isAssignableFrom(c)
+        								|| Expression.class.isAssignableFrom(c)
+        								|| AbstractTask.class.isAssignableFrom(c)) {
+        							classes.add(c);
+        						}
+
+        					} catch (ClassNotFoundException error) {
+        						error.printStackTrace();
+        					} catch (NoClassDefFoundError | ExceptionInInitializerError ignored) {
+        					}
+        				}
+        			}
+        		}
+        		Bukkit.getLogger().info("[skQuery] Finished snooping of " + desc.getName() + " with " + classes.size() + " classes.");
                 register(desc, classes.toArray(new Class[classes.size()]));
             } catch (IOException e) {
                 e.printStackTrace();

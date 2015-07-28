@@ -2,8 +2,6 @@ package com.w00tmast3r.skquery.util.packet.particle;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.w00tmast3r.skquery.util.packet.particle.ParticleLibrary.ParticleType;
-
 public class Particle {
 
     private float xO = 0;
@@ -58,13 +56,10 @@ public class Particle {
     public void play(Location loc, Player... players) {
 
     	ParticleLibrary library = new ParticleLibrary();
-    	String formattedParticle = this.particle.toUpperCase();
-    	if(formattedParticle.contains(" "))
-    		formattedParticle.replace(" ", "_");
     	
     	for(Player p : players)
     	{
-    		library.sendPartileToPlayer(p, ParticleType.valueOf(formattedParticle), loc, this.xO, this.yO,this.zO, 0.0F, this.amount, this.data);
+    		library.sendPartileToPlayer(p, ParticleTypes.valueOf(this.particle), loc, this.xO, this.yO,this.zO, 0.0F, this.amount, this.data);
     		//p.spigot().playEffect(loc, Effect.getByName(this.particle), this.data, 0, this.xO, this.yO,this.zO, 0.0F, this.amount, 2);
     	}
     }

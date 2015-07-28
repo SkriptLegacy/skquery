@@ -20,7 +20,7 @@ import com.w00tmast3r.skquery.skript.Markup;
 import com.w00tmast3r.skquery.util.ImageUtils;
 import com.w00tmast3r.skquery.util.minecraft.JSONMessage;
 import com.w00tmast3r.skquery.util.packet.particle.Particle;
-import com.w00tmast3r.skquery.util.packet.particle.ParticleLibrary.ParticleType;
+import com.w00tmast3r.skquery.util.packet.particle.ParticleType;
 
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -167,24 +167,25 @@ public class Types extends AbstractTask {
 
                  Classes.registerClass(new ClassInfo<>(ParticleType.class, "particletype")
                 .after("string")
+                .before("particletypes")
                 .parser(new Parser<ParticleType>() {
                     @Override
                     public ParticleType parse(String s, ParseContext parseContext) {
                         try {
-                            return ParticleType.valueOf(s.replace(" ", "_").toUpperCase().trim());
+                            return new ParticleType(s.replace(" ", "_").toUpperCase().trim());
                         } catch (IllegalArgumentException e) {
                             Matcher blockdust = BLOCKDUST.matcher(s);
                             Matcher blockcrack = BLOCKCRACK.matcher(s);
                             Matcher iconcrack = ICONCRACK.matcher(s);
                             Matcher iconcrackdata = ICONCRACKDATA.matcher(s);
                             if (blockdust.matches()) {
-                                return ParticleType.valueOf("blockdust_" + blockdust.group(1) + "_" + blockdust.group(2));
+                                return new ParticleType("blockdust_" + blockdust.group(1) + "_" + blockdust.group(2));
                             } else if (blockcrack.matches()) {
-                                return ParticleType.valueOf("blockcrack_" + blockcrack.group(1) + "_" + blockcrack.group(2));
+                                return new ParticleType("blockcrack_" + blockcrack.group(1) + "_" + blockcrack.group(2));
                             } else if (iconcrack.matches()) {
-                                return ParticleType.valueOf("iconcrack_" + iconcrack.group(1));
+                                return new ParticleType("iconcrack_" + iconcrack.group(1));
                             } else if (iconcrackdata.matches()) {
-                                return ParticleType.valueOf("iconcrack_" + iconcrackdata.group(1) + "_" + iconcrackdata.group(2));
+                                return new ParticleType("iconcrack_" + iconcrackdata.group(1) + "_" + iconcrackdata.group(2));
                             }
                         }
                         return null;

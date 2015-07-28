@@ -13,7 +13,6 @@ import com.w00tmast3r.skquery.util.packet.particle.Particle;
 
 import me.virustotal.utils.ServerUtils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
