@@ -31,9 +31,7 @@ public class ParticleLibrary {
             	String particleString = "net.minecraft.server." + Reflection.getServerVersion() + "." + "EnumParticle";
         		Class enumParticle = Class.forName(particleString);
             	constructor = clazz.getConstructor(enumParticle, boolean.class, float.class, float.class, float.class, float.class, float.class, float.class, float.class, int.class, int[].class);
-            }
-            	
-            
+            }   
             getHandle = getCraftClass("entity.CraftPlayer").getMethod("getHandle");
             playerConnection = getMCClass("EntityPlayer").getDeclaredField("playerConnection");
             sendPacket = getMCClass("PlayerConnection").getMethod("sendPacket", getMCClass("Packet"));
@@ -57,7 +55,6 @@ public class ParticleLibrary {
         		String format = particle.getName().toUpperCase();
         		if(format.contains("_"))
         			format = format.replace(" ", "_");
-        		
         		Object obj = meth.invoke(null, format);
         		
         		packet = constructor.newInstance(obj, true, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), xOffset, yOffset, zOffset, speed, amount, new int[0]);
