@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Patterns({ "yaml (1宅alue|2好odes|3好odes with keys|4奸ist) %string% from [file] %string%" })
+@Patterns("yaml (1宅alue|2好odes|3好odes with keys|4奸ist) %string% from [file] %string%")
 public class ExprYAMLValue extends SimpleExpression<Object> {
 
     private static enum State {
