@@ -4,18 +4,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
  
-
-
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-
-import com.w00tmast3r.skquery.util.Reflection;
-
 public class ParticleLibrary {
  
-   private static Constructor<?> constructor;
+   /* private static Constructor<?> constructor;
     private static Field  playerConnection;
     private static Method  getHandle;
     private static Method  sendPacket;
@@ -23,15 +17,7 @@ public class ParticleLibrary {
     static {
         try {
             Class<?> clazz = getMCClass("PacketPlayOutWorldParticles");
-            constructor = null;
-            if(Bukkit.getVersion().contains("1.7"))
-            	constructor = clazz.getConstructor(String.class, float.class, float.class, float.class, float.class, float.class, float.class, float.class, int.class);
-            else if(Bukkit.getVersion().contains("1.8"))
-            {
-            	String particleString = "net.minecraft.server." + Reflection.getServerVersion() + "." + "EnumParticle";
-        		Class enumParticle = Class.forName(particleString);
-            	constructor = clazz.getConstructor(enumParticle, boolean.class, float.class, float.class, float.class, float.class, float.class, float.class, float.class, int.class, int[].class);
-            }   
+            constructor = clazz.getConstructor(String .class, float.class, float.class, float.class, float.class, float.class, float.class, float.class, int.class);
             getHandle = getCraftClass("entity.CraftPlayer").getMethod("getHandle");
             playerConnection = getMCClass("EntityPlayer").getDeclaredField("playerConnection");
             sendPacket = getMCClass("PlayerConnection").getMethod("sendPacket", getMCClass("Packet"));
@@ -40,25 +26,24 @@ public class ParticleLibrary {
         }
     }
  
-    public void sendPartileToPlayer(Player p, ParticleTypes particle, Location loc, float xOffset, float yOffset, float zOffset, float speed, int amount, int data) {
+    public void sendParticleToLocation(Location loc, ParticleType particle, float xOffset, float yOffset, float zOffset, float speed, int amount) {
         try {
-            Object  packet = null;
-            if(Bukkit.getVersion().toLowerCase().contains("1.7"))
-            {
-            	packet = constructor.newInstance(particle.getName(), (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), xOffset, yOffset, zOffset, speed, amount);
+            Object  packet = constructor.newInstance(particle.getName(), (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), xOffset, yOffset, zOffset, speed, amount);
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (loc.getWorld().equals(p.getWorld()) && p.getLocation().distance(loc) <= 50) {
+                    Object  entityPlayer = getHandle.invoke(p);
+                    Object  connection = playerConnection.get(entityPlayer);
+                    sendPacket.invoke(connection, packet);
+                }
             }
-        	else if(Bukkit.getVersion().toLowerCase().contains("1.8"))
-        	{
-        		String particleString = "net.minecraft.server." + Reflection.getServerVersion() + "." + "EnumParticle";
-        		Class<Enum> enumParticle = (Class<Enum>) Class.forName(particleString);
-        		Method meth = enumParticle.getDeclaredMethod("valueOf", String.class);
-        		String format = particle.getName().toUpperCase();
-        		if(format.contains("_"))
-        			format = format.replace(" ", "_");
-        		Object obj = meth.invoke(null, format);
-        		
-        		packet = constructor.newInstance(obj, true, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), xOffset, yOffset, zOffset, speed, amount, new int[0]);
-        	}
+        } catch (Exception  e) {
+            e.printStackTrace();
+        }
+    }
+ 
+    public void sendPartileToPlayer(Player p, ParticleType particle, Location loc, float xOffset, float yOffset, float zOffset, float speed, int amount) {
+        try {
+            Object  packet = constructor.newInstance(particle.getName(), (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), xOffset, yOffset, zOffset, speed, amount);
             Object  entityPlayer = getHandle.invoke(p);
             Object  connection = playerConnection.get(entityPlayer);
             sendPacket.invoke(connection, packet);
@@ -90,4 +75,62 @@ public class ParticleLibrary {
         }
         return clazz;
     }
+ 
+    public enum ParticleType {
+ 
+    	
+        DRIP_WATER("dripWater"), 
+        VOID_FOG("depthsuspend"),  
+        SNOW_SHOVEL("snowshovel"), 
+        MOB_SPELL("mobSpell"), 
+        BUBBLE("bubble"), 
+        SUSPEND("suspend"), 
+        DEPTH_SUSPEND("depthSuspend"), 
+        SMALL_SMOKE("townaura"), 
+        CRIT("crit"), 
+        SLIME("slime"), 
+        EXPLOSION("explode"),
+        EXPLOSION_HUGE("hugeexplosion"), 
+        EXPLOSION_LARGE("largeexplode"), 
+        FIREWORKS_SPARK("fireworksSpark"),
+        FLYING_GLYPH("enchantmenttable"),
+        HEART("heart"), 
+        POTION_SWIRL("mobSpell"),
+        POTION_SWIRL_TRANSPARENT("mobSpellAmbient"),
+        VILLAGER_THUNDERCLOUD("angryVillager"), 
+        MAGIC_CRIT("magicCrit"), 
+        INSTANT_SPELL("instantSpell"), 
+        WITCH_MAGIC("witchMagic"), 
+        HAPPY_VILLAGER("happerVillager"), 
+        NOTE("note"), 
+        PORTAL("portal"), 
+        ENCHANTMENT_TABLE("enchantmenttable"), 
+        EXPLODE("explode"), 
+        FLAME("flame"), 
+        LAVADRIP("dripLava"),
+        WATERDRIP("dripWater"),
+        LAVA_POP("lava"), 
+        PARTICLE_SMOKE("smoke"),
+        LARGE_SMOKE("largesmoke"), 
+        CLOUD("cloud"), 
+        COLOURED_DUST("reddust"), 
+        SNOWBALL_BREAK("snowballpoof"), 
+        MOB_SPELL_AMBIENT("mobSpellAmbient"), 
+        SPELL("spell"), 
+        FOOTSTEP("footstep"), 
+        SPLASH("splash"),
+        ITEM_BREAK("iconcrack"),
+        TILE_BREAK("blockcrack"),
+        TILE_DUST("blockdust");
+
+        
+        private String  name;
+        private ParticleType(String  name) 
+        {
+            this.name = name; 
+        }
+        public String  getName() {
+            return name;
+        }
+    }*/
 }

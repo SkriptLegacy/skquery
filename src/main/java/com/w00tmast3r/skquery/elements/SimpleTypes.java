@@ -4,7 +4,6 @@ import com.w00tmast3r.skquery.api.AbstractTask;
 import com.w00tmast3r.skquery.skript.EnumClassInfo;
 import com.w00tmast3r.skquery.util.minecraft.MoonPhase;
 import com.w00tmast3r.skquery.util.packet.particle.ParticleTypes;
-
 import org.bukkit.Art;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Sound;

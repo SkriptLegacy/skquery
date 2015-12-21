@@ -10,7 +10,6 @@ import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.yggdrasil.Fields;
-
 import com.sun.rowset.CachedRowSetImpl;
 import com.w00tmast3r.skquery.api.AbstractTask;
 import com.w00tmast3r.skquery.skript.Dynamic;
@@ -21,7 +20,7 @@ import com.w00tmast3r.skquery.util.ImageUtils;
 import com.w00tmast3r.skquery.util.minecraft.JSONMessage;
 import com.w00tmast3r.skquery.util.packet.particle.Particle;
 import com.w00tmast3r.skquery.util.packet.particle.ParticleType;
-
+import com.w00tmast3r.skquery.util.packet.particle.ParticleTypes;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 
@@ -165,14 +164,14 @@ public class Types extends AbstractTask {
                     }
                 }));
 
-                 Classes.registerClass(new ClassInfo<>(ParticleType.class, "particletype")
+        Classes.registerClass(new ClassInfo<>(ParticleType.class, "particletype")
                 .after("string")
                 .before("particletypes")
                 .parser(new Parser<ParticleType>() {
                     @Override
                     public ParticleType parse(String s, ParseContext parseContext) {
                         try {
-                            return new ParticleType(s.replace(" ", "_").toUpperCase().trim());
+                            return new ParticleType(ParticleTypes.valueOf(s.replace(" ", "_").toUpperCase().trim()));
                         } catch (IllegalArgumentException e) {
                             Matcher blockdust = BLOCKDUST.matcher(s);
                             Matcher blockcrack = BLOCKCRACK.matcher(s);

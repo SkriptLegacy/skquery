@@ -9,10 +9,10 @@ public class ParticleType {
     }
 
     public ParticleType(ParticleTypes id) {
-        this.id = id.getName();
+        this.id = id.getId();
     }
 
-    public String getName() {
+    public String getId() {
         return id;
     }
 }
