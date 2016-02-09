@@ -4,8 +4,11 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+
 import com.w00tmast3r.skquery.api.Patterns;
-import org.bukkit.Bukkit;
+
+import me.virustotal.skquery.objects.FastOfflinePlayer;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.scoreboard.Objective;
@@ -29,7 +32,7 @@ public class EffSetScore extends Effect {
         Objective obj = sb.getObjective("skript");
         if(sb == null || obj == null) return;
         if (i.length() > 16) i = i.substring(0, 16);
-        obj.getScore(Bukkit.getOfflinePlayer(i)).setScore(v.intValue());
+        obj.getScore(new FastOfflinePlayer(i)).setScore(v.intValue());
         p.setScoreboard(sb);
     }
 
