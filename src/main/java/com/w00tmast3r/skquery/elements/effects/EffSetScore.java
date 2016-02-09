@@ -28,7 +28,7 @@ public class EffSetScore extends Effect {
         Scoreboard sb = p.getScoreboard();
         Objective obj = sb.getObjective("skript");
         if(sb == null || obj == null) return;
-        try {i = i.substring(0, 16);} catch (Exception ignored) {}
+        if (i.length() > 16) i = i.substring(0, 16);
         obj.getScore(Bukkit.getOfflinePlayer(i)).setScore(v.intValue());
         p.setScoreboard(sb);
     }
